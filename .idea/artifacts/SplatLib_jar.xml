@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SplatLib:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SplatLib_jar</output-path>
+    <root id="archive" name="SplatLib.jar">
+      <element id="module-output" name="SplatLib" />
+    </root>
+  </artifact>
+</component>
