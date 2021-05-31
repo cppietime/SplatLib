@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\RockCLImr\src\main\java\com\funguscow\clim\CliParser.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\src\com\funguscow\splat\scale\ImageScaler.java">
           <value>
             <Attribute>
