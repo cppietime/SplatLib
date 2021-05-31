@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="RockCLImr" />
+        <module name="SplatCLI" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="RockCLImr" target="8" />
+      <module name="SplatCLI" target="8" />
       <module name="SplatLib" target="8" />
     </bytecodeTargetLevel>
   </component>

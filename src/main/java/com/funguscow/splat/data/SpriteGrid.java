@@ -12,8 +12,6 @@ import java.util.Random;
  */
 public class SpriteGrid {
 
-    private static final float H_SIGMA = 0.2f, S_SIGMA = 0.2f, V_SIGMA = 0.2f;
-
     private int[] grid;
     private final int width, height;
     private final Specs specs;
@@ -74,10 +72,10 @@ public class SpriteGrid {
         palette = new int[specs.colors];
         palette[0] = Utils.HSV_to_ARGB(specs.hue, specs.saturation, specs.value);
         for (int i = 1; i < palette.length; i++) {
-            float h = (float) random.nextGaussian() * H_SIGMA + specs.hue;
-            float s = (float) random.nextGaussian() * S_SIGMA + specs.saturation;
+            float h = (float) random.nextGaussian() * specs.hue_sigma + specs.hue;
+            float s = (float) random.nextGaussian() * specs.saturation_sigma + specs.saturation;
             s = Utils.clamp(s, 0, 1);
-            float v = (float) random.nextGaussian() * V_SIGMA + specs.value;
+            float v = (float) random.nextGaussian() * specs.value_sigma + specs.value;
             v = Utils.clamp(v, 0, 1);
             // No need to clamp h as it wraps around anyway
             palette[i] = Utils.HSV_to_ARGB(h, s, v);
@@ -109,8 +107,7 @@ public class SpriteGrid {
      */
     private void simulateCA() {
         int[] temp = new int[width * height];
-        int generations = 1; // TODO allow specifying
-        for (int i = 0; i < generations; i++) {
+        for (int i = 0; i < specs.caGenerations; i++) {
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     int neighbors = -grid[y * width + x]; // Subtract self to only look at neighbors

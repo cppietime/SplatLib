@@ -211,6 +211,26 @@ public class CliParser {
     }
 
     /**
+     * Get an option cast to a float
+     * @param key Named key for option value
+     * @param failure Float value to return if {@code key} was not set
+     * @return Float value for {@code key}, or {@code failure} if there was none set
+     *
+     * @throws InvalidArgumentException when {@code key} has been set to a list of size > 1
+     * @throws NumberFormatException when the value for {@code key} cannot be cast to a float
+     */
+    public float getFloat(String key, float failure) {
+        if (values.containsKey(key)) {
+            List<String> value = values.get(key);
+            if (value.size() != 1) {
+                throw new InvalidArgumentException("Cannot cast list to int");
+            }
+            return Float.parseFloat(value.get(0));
+        }
+        return failure;
+    }
+
+    /**
      *
      * @param key Named key for option value
      * @return {@code true} if a value was set for {@code key}, otherwise {@code false}
@@ -235,6 +255,20 @@ public class CliParser {
      */
     public List<String> getArguments() {
         return endArgs;
+    }
+
+    /**
+     * Print the help
+     */
+    public void help() {
+        for (Option option : optionsShort.values()) {
+            option.print();
+        }
+        for (Option option : optionsLong.values()) {
+            if (option.shortName == null) {
+                option.print();
+            }
+        }
     }
 
 }

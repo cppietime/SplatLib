@@ -7,7 +7,7 @@ public class CliTest {
     private static CliParser parser = new CliParser().addArgument(
             new Option('n', "nothing", "nVar", "nVal", Option.ArgumentType.NONE, Option.ArgumentAction.SET)
     ).addArgument(
-            new Option('v', "verbose", null, "", Option.ArgumentType.NONE, Option.ArgumentAction.SET)
+            new Option('v', "verbose", null, "", "Sets verbose mode on", Option.ArgumentType.NONE, Option.ArgumentAction.SET)
     ).addArgument(
             new Option('l', "list", null, "entry", Option.ArgumentType.OPTIONAL, Option.ArgumentAction.APPEND)
     ).addArgument(
@@ -148,6 +148,7 @@ public class CliTest {
     }
 
     public static void main(String[] args) {
+        parser.help();
         testOneSimpleShort();
         testManySimpleShort();
         testManyCompoundShort();

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RockCLImr/RockCLImr.iml" filepath="$PROJECT_DIR$/RockCLImr/RockCLImr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SplatCLI/SplatCLI.iml" filepath="$PROJECT_DIR$/SplatCLI/SplatCLI.iml" />
       <module fileurl="file://$PROJECT_DIR$/SplatLib.iml" filepath="$PROJECT_DIR$/SplatLib.iml" />
     </modules>
   </component>

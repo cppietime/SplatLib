@@ -17,8 +17,10 @@ public class Specs {
     public float xMirror = 0.5f, yMirror = 0.5f, pMirror = 0.5f, nMirror = 0.5f;
     public float variance = 0.5f, mutation = 0.5f;
     public float hue = 0, saturation = 0, value = 0;
+    public float hue_sigma = 1f / 6 / 2, saturation_sigma = 0.1f, value_sigma = 0.1f;
 
     public float[] caProbs = {0.9f, 0.5f, 0, 0};
+    public int caGenerations = 1;
 
     public boolean randomSeed = true, randomColor = true;
 
