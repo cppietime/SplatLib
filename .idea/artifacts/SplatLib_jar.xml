@@ -2,7 +2,7 @@
   <artifact type="jar" name="SplatLib:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/SplatLib_jar</output-path>
     <root id="archive" name="SplatLib.jar">
-      <element id="module-output" name="SplatLib" />
+      <element id="module-output" name="Splat" />
     </root>
   </artifact>
 </component>

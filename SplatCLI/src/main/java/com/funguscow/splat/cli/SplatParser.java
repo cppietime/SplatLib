@@ -11,6 +11,7 @@ public class SplatParser extends CliParser {
     private final Random random = new Random();
     private String outputDir = null;
     private String format = "png";
+    private boolean grid = false;
     private int numImages = 1;
 
     public SplatParser() {
@@ -347,6 +348,15 @@ public class SplatParser extends CliParser {
                 "Format to save image in",
                 Option.ArgumentType.REQUIRED,
                 Option.ArgumentAction.SET
+        )); // JPG? PNG?
+        addArgument(new Option(
+                null,
+                "grid",
+                null,
+                "set",
+                "Save many images to a grid",
+                Option.ArgumentType.NONE,
+                Option.ArgumentAction.SET
         ));
 
         addArgument(new Option(
@@ -392,6 +402,7 @@ public class SplatParser extends CliParser {
         }
         outputDir = getString("output");
         numImages = getInt("num_images", 1);
+        grid = wasSet("grid");
         if (wasSet("format")) {
             format = getString("format");
         } else if (outputDir != null) {
@@ -456,5 +467,9 @@ public class SplatParser extends CliParser {
 
     public String getFormat() {
         return format;
+    }
+
+    public boolean isGrid() {
+        return grid;
     }
 }
