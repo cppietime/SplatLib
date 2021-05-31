@@ -4,3 +4,6 @@
 /workspace.xml
 /target/
 /RockCLImr/target/
+/SplatCLI/target/
+/*.png
+/*.jpg

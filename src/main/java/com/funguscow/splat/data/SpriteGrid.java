@@ -35,6 +35,15 @@ public class SpriteGrid {
     }
 
     /**
+     * Reseed the random
+     * @param seed Seed for this grid's random
+     */
+    public void reseed(long seed) {
+        specs.seed = seed;
+        random.setSeed(seed);
+    }
+
+    /**
      * Generate the image and write them to an integer array
      */
     public int[] draw() {

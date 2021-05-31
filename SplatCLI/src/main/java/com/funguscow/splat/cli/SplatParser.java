@@ -8,8 +8,9 @@ import java.util.Random;
 
 public class SplatParser extends CliParser {
 
-    private Random random = new Random();
+    private final Random random = new Random();
     private String outputDir = null;
+    private String format = "png";
     private int numImages = 1;
 
     public SplatParser() {
@@ -338,6 +339,25 @@ public class SplatParser extends CliParser {
                 Option.ArgumentType.REQUIRED,
                 Option.ArgumentAction.SET
         )); // Batch size
+        addArgument(new Option(
+                'f',
+                "format",
+                null,
+                null,
+                "Format to save image in",
+                Option.ArgumentType.REQUIRED,
+                Option.ArgumentAction.SET
+        ));
+
+        addArgument(new Option(
+                '?',
+                "help",
+                null,
+                "set",
+                "Display help",
+                Option.ArgumentType.NONE,
+                Option.ArgumentAction.SET
+        ));
     }
 
     private int intOf(String key, int failure, int min, int max) {
@@ -364,6 +384,25 @@ public class SplatParser extends CliParser {
         return floatOf(key, failure, 0, 1);
     }
 
+    @Override
+    public void parse(String... args) {
+        super.parse(args);
+        if (wasSet("help")) {
+            help();
+        }
+        outputDir = getString("output");
+        numImages = getInt("num_images", 1);
+        if (wasSet("format")) {
+            format = getString("format");
+        } else if (outputDir != null) {
+            int period = outputDir.lastIndexOf('.');
+            if (period > 0) {
+                format = outputDir.substring(period + 1);
+                outputDir = outputDir.substring(0, period);
+            }
+        }
+    }
+
     public Specs toSpecs() {
         Specs specs = new Specs();
         if (wasSet("randomize_all")) {
@@ -371,7 +410,7 @@ public class SplatParser extends CliParser {
         }
 
         specs.width = getInt("width", specs.width);
-        specs.height  = getInt("height", specs.height);
+        specs.height = getInt("height", specs.height);
         specs.targetWidth = getInt("scaled_width", specs.width);
         specs.targetHeight = getInt("scaled_height", specs.height);
         specs.colors = intOf("colors", specs.colors, 2, 15);
@@ -413,5 +452,9 @@ public class SplatParser extends CliParser {
 
     public int getNumImages() {
         return numImages;
+    }
+
+    public String getFormat() {
+        return format;
     }
 }
