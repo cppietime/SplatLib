@@ -13,6 +13,7 @@ public class SplatParser extends CliParser {
     private String format = "png";
     private boolean grid = false;
     private int numImages = 1;
+    private int bits = -1;
 
     public SplatParser() {
         super();
@@ -358,6 +359,15 @@ public class SplatParser extends CliParser {
                 Option.ArgumentType.NONE,
                 Option.ArgumentAction.SET
         ));
+        addArgument(new Option(
+                'p',
+                "paletted",
+                null,
+                "0",
+                "Save as a paletted image. Ignored for grids",
+                Option.ArgumentType.OPTIONAL,
+                Option.ArgumentAction.SET
+        ));
 
         addArgument(new Option(
                 '?',
@@ -454,6 +464,15 @@ public class SplatParser extends CliParser {
 
         specs.randomSeed = wasSet("random_seed");
         specs.randomColor = wasSet("random_color");
+
+        if (wasSet("paletted")) {
+            bits = getInt("paletted", 0);
+            if (bits == 0) {
+                for(bits = 1; (1 << bits) < specs.colors + 1; bits ++);
+            } else {
+                specs.colors = Math.min(specs.colors, (1 << bits) - 1);
+            }
+        }
         return specs;
     }
 
@@ -471,5 +490,9 @@ public class SplatParser extends CliParser {
 
     public boolean isGrid() {
         return grid;
+    }
+
+    public int getBits() {
+        return bits;
     }
 }

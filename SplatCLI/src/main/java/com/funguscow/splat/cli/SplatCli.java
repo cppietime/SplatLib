@@ -6,9 +6,13 @@ import com.funguscow.splat.data.SpriteGrid;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
+import java.awt.image.IndexColorModel;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class SplatCli {
@@ -23,14 +27,14 @@ public class SplatCli {
         Graphics2D gridGraphics = null;
         int gridW = 1, gridH = 1;
         if (parser.isGrid() && parser.getNumImages() > 1) {
-            gridW = (int)(Math.sqrt(parser.getNumImages()) + 0.99);
+            gridW = (int) (Math.sqrt(parser.getNumImages()) + 0.99);
             gridH = (parser.getNumImages() + gridW - 1) / gridW;
             gridImage = new BufferedImage(specs.targetWidth * gridW,
                     specs.targetHeight * gridH,
                     BufferedImage.TYPE_INT_ARGB);
-            gridGraphics = (Graphics2D)gridImage.getGraphics();
+            gridGraphics = (Graphics2D) gridImage.getGraphics();
         }
-        DataBufferInt buffer = ((DataBufferInt)image.getRaster().getDataBuffer());
+        DataBufferInt buffer = ((DataBufferInt) image.getRaster().getDataBuffer());
         OutputStream os = null;
         if (parser.getOutputDir() == null) {
             os = System.out;
@@ -56,7 +60,9 @@ public class SplatCli {
                     } else if (os == null) {
                         os = System.out;
                     }
-                    ImageIO.write(image, parser.getFormat(), os);
+                    ImageIO.write(parser.getBits() == -1 ? image : palettize(parser.getBits(), image),
+                            parser.getFormat(),
+                            os);
                     if (parser.getOutputDir() != null) {
                         os.close();
                     }
@@ -86,6 +92,32 @@ public class SplatCli {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static BufferedImage palettize(int bits, BufferedImage source) {
+        Map<Integer, Integer> palette = new HashMap<>();
+        palette.put(0, 0);
+        DataBufferInt srcBuffer = (DataBufferInt) source.getRaster().getDataBuffer();
+        int[] srcData = srcBuffer.getData();
+        for (int pixel : srcData) {
+            if ((pixel >>> 24) != 0xff) {
+                pixel = 0;
+            }
+            final int size = palette.size();
+            palette.putIfAbsent(pixel, size);
+        }
+        int[] cmap = new int[palette.size()];
+        for (int i : palette.keySet()) {
+            cmap[palette.get(i)] = i;
+        }
+        IndexColorModel icm = new IndexColorModel(bits, cmap.length, cmap, 0, DataBuffer.TYPE_BYTE, null);
+        BufferedImage p = new BufferedImage(source.getWidth(),
+                source.getHeight(),
+                cmap.length <= 16 ? BufferedImage.TYPE_BYTE_BINARY : BufferedImage.TYPE_BYTE_INDEXED,
+                icm);
+        Graphics2D pg = (Graphics2D) p.getGraphics();
+        pg.drawImage(source, 0, 0, null);
+        return p;
     }
 
 }
